@@ -81,6 +81,7 @@
             overflow-wrap: break-word;
             border-radius: 10px;
             overflow-y: auto; /* Allow scrolling */
+            max-height: 85vh; /* Ensure it doesn't overflow the viewport height */
         }
 
         /* Styling for cover letter and CV containers */
@@ -96,6 +97,8 @@
             white-space: pre-wrap; /* Ensures that newlines are respected */
             overflow-wrap: break-word;
             border-radius: 10px;
+            max-height: calc(100vh - 150px); /* Ensure it doesn't overflow the viewport */
+            overflow-y: auto; /* Allow scrolling */
         }
 
         canvas {
