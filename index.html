@@ -1,123 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Collin's Matrix CV</title>
-  <style>
-    body {
-      background-color: black;
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
+<script>
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
 
-    header {
-      text-align: center;
-      padding: 60px 0;
-    }
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
 
-    h1 {
-      font-size: 60px;
-      color: #00ff00;
-      text-shadow: 0 0 10px #00ff00;
-    }
+  const letters = "アァイィウヴエカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const fontSize = 14;
+  const columns = canvas.width / fontSize;
+  const drops = Array(Math.floor(columns)).fill(1);
 
-    h2 {
-      font-size: 30px;
-      color: #0f0;
-      text-shadow: 0 0 5px #00ff00;
-    }
+  function draw() {
+    // Stronger black fade to dim the brightness
+    ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    .intro {
-      font-size: 24px;
-      color: #0f0;
-      margin-top: 10px;
-    }
+    // Softer green color
+    ctx.fillStyle = "#0a0";
+    ctx.font = fontSize + "px monospace";
 
-    .btn-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 40px;
-    }
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters.charAt(Math.floor(Math.random() * letters.length));
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-    .button {
-      background-color: black;
-      color: #00ff00;
-      border: 2px solid #00ff00;
-      font-size: 18px;
-      padding: 12px 24px;
-      border-radius: 5px;
-      font-weight: bold;
-      text-decoration: none;
-      box-shadow: 0 0 8px #00ff00;
-      transition: all 0.3s ease;
-    }
-
-    .button:hover {
-      background-color: #00ff00;
-      color: black;
-      box-shadow: 0 0 20px #00ff00;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-  </style>
-</head>
-<body>
-  <canvas id="matrixCanvas"></canvas>
-
-  <header>
-    <h1>127.0.0.1</h1>
-    <h2>There is no place like home</h2>
-    <p class="intro">This is Collin's online CV portal</p>
-  </header>
-
-  <div class="btn-container">
-    <a class="button" href="csmit-cv.docx" download>Download CV</a>
-    <a class="button" href="csmit-coverl.docx" download>Download Cover Letter</a>
-    <a class="button" href="https://drive.google.com/drive/folders/1NfIZR9yw4Vyg1lAFYRqEXUdEkeSYYQ1p?usp=sharing" target="_blank">Download Certificates</a>
-  </div>
-
-  <script>
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = "アァイィウヴエカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#0f0";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters.charAt(Math.floor(Math.random() * letters.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
       }
+      drops[i]++;
     }
+  }
 
-    setInterval(draw, 33);
-  </script>
-</body>
-</html>
+  setInterval(draw, 33);
+</script>
