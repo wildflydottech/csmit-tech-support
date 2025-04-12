@@ -63,6 +63,17 @@
             box-shadow: 0 0 20px #00ff00;
         }
 
+        .cover-letter {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #111;
+            color: #0f0;
+            border: 1px solid #00ff00;
+            font-size: 18px;
+            white-space: pre-wrap; /* Ensures that newlines are respected */
+            overflow-wrap: break-word;
+        }
+
         canvas {
             position: fixed;
             top: 0;
@@ -83,11 +94,13 @@
 
     <div class="btn-container">
         <a class="button" href="csmit-cv.docx" target="_blank">Open CV</a>
-        <a class="button" href="csmit-coverl.docx" target="_blank">Open Cover Letter</a>
+        <a class="button" href="#" onclick="openCoverLetter()">Open Cover Letter</a>
         <a class="button" href="https://drive.google.com/drive/folders/1NfIZR9yw4Vyg1lAFYRqEXUdEkeSYYQ1p?usp=sharing" target="_blank">
             Download Professional Certificates
         </a>
     </div>
+
+    <div id="coverLetterContainer"></div> <!-- This will hold the cover letter content -->
 
     <script>
         const canvas = document.getElementById('matrixCanvas');
@@ -120,6 +133,25 @@
         }
 
         setInterval(draw, 33);
+
+        // This function will fetch the cover letter and display it in the page
+        function openCoverLetter() {
+            fetch('csmit-coverl.docx') // Adjust if necessary, depending on file format
+                .then(response => response.text())
+                .then(data => {
+                    // Displaying the cover letter content in the #coverLetterContainer div
+                    document.getElementById('coverLetterContainer').innerHTML = `
+                        <div class="cover-letter">
+                            <h3>Cover Letter</h3>
+                            <p>${data}</p>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error loading cover letter:', error);
+                    alert('There was an error loading the cover letter.');
+                });
+        }
     </script>
 </body>
 </html>
