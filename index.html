@@ -138,7 +138,6 @@
 
         // Function to load and display the CV
         function openCV() {
-            // Display the CV content with buttons for download and back
             const cvHTML = `
                 <div class="cv-container">
                     <h3>CV</h3>
@@ -152,21 +151,30 @@
                     </div>
                 </div>
             `;
-
-            // Insert the HTML for the CV into the page
             document.getElementById('cvContainer').innerHTML = cvHTML;
             document.getElementById('coverLetterContainer').innerHTML = "";  // Clear cover letter container
         }
 
-        // Function to load and display the cover letter
+        // Function to load and display the cover letter with the provided content
         function openCoverLetter() {
-            // Display the cover letter content with buttons for download and back
             const coverLetterHTML = `
                 <div class="cover-letter">
                     <h3>Cover Letter</h3>
                     <p>
-                        <!-- Content of your cover letter goes here -->
-                        This is the cover letter text, please adjust the content to your needs. If it's a long document, break it into multiple paragraphs.
+                        Collin Smit | Cape Town, South Africa | collinsmit144@gmail.com | 083 634 3888
+                        <br><br>
+                        To Whom it may concern,
+                        <br><br>
+                        I’m reaching out to express my interest in a Specialist Technical Support role in your team. With over 10 years in IT operations and support, I’ve built a solid foundation in managing servers, networks, and everything in between—especially when things go sideways and need quick fixing.
+                        <br><br>
+                        Right now, I’m part of the operations support team at Eezipay Management Systems, where I manage Linux-based systems, Docker environments, POS setups, and provide second- and third-line support. I also work closely with developers and clients, acting as the go-between to make sure issues are solved quickly and systems keep running smoothly.
+                        <br><br>
+                        I’m certified in CCNA, ITIL v3, and VMware, and have hands-on experience with a wide range of tools—Cisco, Fortinet, Exchange, Proxmox, you name it. My approach is simple: be proactive, stay calm under pressure, and always aim to make tech easier for others to use.
+                        <br><br>
+                        I’d love the chance to bring this experience into a new environment where I can continue helping teams and users work better through solid tech support. Thanks for taking the time to consider my application—I’d be happy to chat more about how I can help.
+                        <br><br>
+                        Best regards, <br>
+                        Collin Smit
                     </p>
                     <div class="btn-container">
                         <a class="button" href="csmit-tech-support/csmit-coverl.docx" download>Download Cover Letter</a>
@@ -174,8 +182,6 @@
                     </div>
                 </div>
             `;
-
-            // Insert the HTML for the cover letter into the page
             document.getElementById('coverLetterContainer').innerHTML = coverLetterHTML;
             document.getElementById('cvContainer').innerHTML = "";  // Clear CV container
         }
