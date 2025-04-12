@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collin's Matrix CV</title>
     <style>
         body {
@@ -11,7 +10,6 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            height: 100%;
             overflow: hidden;
         }
 
@@ -65,93 +63,128 @@
             box-shadow: 0 0 20px #00ff00;
         }
 
-        .content-container {
-            width: 100%;
-            height: calc(100vh - 200px);
-            overflow-y: auto;
+        .cover-letter,
+        .cv-container {
+            margin-top: 40px;
             padding: 20px;
-            background-color: black;
-            color: #00ff00;
-            box-sizing: border-box;
+            background-color: #111;
+            color: #0f0;
+            border: 1px solid #00ff00;
             font-size: 18px;
-            white-space: pre-wrap;
+            white-space: pre-wrap; /* Ensures that newlines are respected */
+            overflow-wrap: break-word;
         }
 
-        #docx-content {
-            margin-top: 20px;
-            padding: 15px;
-            border: 2px solid #00ff00;
-            border-radius: 5px;
-            background-color: black;
-            color: #00ff00;
-            font-family: 'Courier New', Courier, monospace;
-            line-height: 1.6;
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
         }
-
-        #buttons-container {
-            display: none;
-            margin-top: 20px;
-            text-align: center;
-        }
-
     </style>
 </head>
 <body>
 
-    <!-- Home Page -->
-    <header id="home-header">
+    <canvas id="matrixCanvas"></canvas>
+
+    <header>
         <h1>127.0.0.1</h1>
         <h2>There is no place like home</h2>
         <p class="intro">This is Collin's online CV portal</p>
     </header>
 
     <div class="btn-container">
-        <a class="button" href="javascript:showDocxViewer('coverLetter')">View Cover Letter</a>
-        <a class="button" href="javascript:showDocxViewer('cv')">View CV</a>
+        <a class="button" href="#" onclick="openCV()">Open CV</a>
+        <a class="button" href="#" onclick="openCoverLetter()">Open Cover Letter</a>
+        <a class="button" href="https://drive.google.com/drive/folders/1NfIZR9yw4Vyg1lAFYRqEXUdEkeSYYQ1p?usp=sharing" target="_blank">
+            Download Professional Certificates
+        </a>
     </div>
 
-    <!-- Dynamic Content Container -->
-    <div id="docx-content" class="content-container"></div>
-
-    <div id="buttons-container">
-        <button class="button" onclick="window.location.reload();">Back</button>
-        <button class="button" id="download-button">Download DOCX</button>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <div id="cvContainer"></div> <!-- This will hold the CV content -->
+    <div id="coverLetterContainer"></div> <!-- This will hold the cover letter content -->
 
     <script>
-        const homeHeader = document.getElementById("home-header");
-        const docxContent = document.getElementById("docx-content");
-        const buttonsContainer = document.getElementById("buttons-container");
-        const downloadButton = document.getElementById("download-button");
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
 
-        // Function to load DOCX content and show it
-        function showDocxViewer(docType) {
-            homeHeader.style.display = "none";  // Hide home page
-            docxContent.style.display = "block"; // Show content area
-            buttonsContainer.style.display = "block"; // Show buttons (download and back)
-            docxContent.innerHTML = ""; // Clear previous content
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
 
-            let fileUrl;
-            if (docType === 'coverLetter') {
-                fileUrl = "csmit-coverl.docx"; // Path to the cover letter .docx
-            } else if (docType === 'cv') {
-                fileUrl = "csmit-cv.docx"; // Path to the CV .docx
+        const letters = "アァイィウヴエカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function draw() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#0f0";
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
             }
+        }
 
-            // Read and display the DOCX file
-            fetch(fileUrl)
-                .then(response => response.arrayBuffer())
-                .then(arrayBuffer => {
-                    mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
-                        .then(function(result) {
-                            // Inject the converted HTML content
-                            docxContent.innerHTML = result.value;
+        setInterval(draw, 33);
 
-                            // Set up the download button to download the original DOCX file
-                            downloadButton.onclick = function() {
-                                const link = document.createElement("a");
-                                link.href = fileUrl;
-                                link.download = docType === 'coverLetter' ? 'coverLetter.docx' : 'cv.docx';
-                                link.click
+        // Function to load and display the CV
+        function openCV() {
+            const cvHTML = `
+                <div class="cv-container">
+                    <h3>CV</h3>
+                    <p>
+                        <!-- Content of your CV goes here -->
+                        This is the CV text, please adjust the content to your needs. If it's a long document, break it into multiple paragraphs.
+                    </p>
+                    <div class="btn-container">
+                        <a class="button" href="csmit-tech-support/csmit-cv.docx" download>Download CV</a>
+                        <a class="button" href="/" onclick="window.location.reload(); return false;">Back to Home</a>
+                    </div>
+                </div>
+            `;
+            document.getElementById('cvContainer').innerHTML = cvHTML;
+            document.getElementById('coverLetterContainer').innerHTML = "";  // Clear cover letter container
+        }
+
+        // Function to load and display the cover letter with the provided content
+        function openCoverLetter() {
+            const coverLetterHTML = `
+                <div class="cover-letter">
+                    <h3>Cover Letter</h3>
+                    <p>
+                        Collin Smit | Cape Town, South Africa | collinsmit144@gmail.com | 083 634 3888
+                        <br><br>
+                        To Whom it may concern,
+                        <br><br>
+                        I’m reaching out to express my interest in a Specialist Technical Support role in your team. With over 10 years in IT operations and support, I’ve built a solid foundation in managing servers, networks, and everything in between—especially when things go sideways and need quick fixing.
+                        <br><br>
+                        Right now, I’m part of the operations support team at Eezipay Management Systems, where I manage Linux-based systems, Docker environments, POS setups, and provide second- and third-line support. I also work closely with developers and clients, acting as the go-between to make sure issues are solved quickly and systems keep running smoothly.
+                        <br><br>
+                        I’m certified in CCNA, ITIL v3, and VMware, and have hands-on experience with a wide range of tools—Cisco, Fortinet, Exchange, Proxmox, you name it. My approach is simple: be proactive, stay calm under pressure, and always aim to make tech easier for others to use.
+                        <br><br>
+                        I’d love the chance to bring this experience into a new environment where I can continue helping teams and users work better through solid tech support. Thanks for taking the time to consider my application—I’d be happy to chat more about how I can help.
+                        <br><br>
+                        Best regards, <br>
+                        Collin Smit
+                    </p>
+                    <div class="btn-container">
+                        <a class="button" href="csmit-tech-support/csmit-coverl.docx" download>Download Cover Letter</a>
+                        <a class="button" href="/" onclick="window.location.reload(); return false;">Back to Home</a>
+                    </div>
+                </div>
+            `;
+            document.getElementById('coverLetterContainer').innerHTML = coverLetterHTML;
+            document.getElementById('cvContainer').innerHTML = "";  // Clear CV container
+        }
+    </script>
+</body>
+</html>
