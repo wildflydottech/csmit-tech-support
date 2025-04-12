@@ -4,18 +4,21 @@
     <meta charset="UTF-8">
     <title>Collin's Matrix CV</title>
     <style>
-        body {
+        /* Make sure the body and html take the full height of the window */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
             background-color: black;
             color: #00ff00;
             font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
+            overflow: hidden; /* Prevent any overflow outside the window */
         }
 
         header {
             text-align: center;
-            padding: 60px 0;
+            padding: 20px;
+            margin-top: 20px;
         }
 
         h1 {
@@ -63,16 +66,36 @@
             box-shadow: 0 0 20px #00ff00;
         }
 
-        .cover-letter,
-        .cv-container {
-            margin-top: 40px;
+        /* Full-screen container for content */
+        .content-container {
+            height: calc(100vh - 150px); /* Take full height minus header space */
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
             background-color: #111;
             color: #0f0;
             border: 1px solid #00ff00;
             font-size: 18px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            border-radius: 10px;
+            overflow-y: auto; /* Allow scrolling */
+        }
+
+        /* Styling for cover letter and CV containers */
+        .cover-letter-container, .cv-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #111;
+            color: #0f0;
+            border: 1px solid #00ff00;
+            font-size: 18px;
+            line-height: 1.6;
             white-space: pre-wrap; /* Ensures that newlines are respected */
             overflow-wrap: break-word;
+            border-radius: 10px;
         }
 
         canvas {
@@ -158,7 +181,7 @@
         // Function to load and display the cover letter with the provided content
         function openCoverLetter() {
             const coverLetterHTML = `
-                <div class="cover-letter">
+                <div class="cover-letter-container">
                     <h3>Cover Letter</h3>
                     <p>
                         Collin Smit | Cape Town, South Africa | collinsmit144@gmail.com | 083 634 3888
