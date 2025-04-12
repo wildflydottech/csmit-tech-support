@@ -134,23 +134,25 @@
 
         setInterval(draw, 33);
 
-        // This function will fetch the cover letter and display it in the page
+        // Function to load and display the cover letter
         function openCoverLetter() {
-            fetch('csmit-coverl.docx') // Adjust if necessary, depending on file format
-                .then(response => response.text())
-                .then(data => {
-                    // Displaying the cover letter content in the #coverLetterContainer div
-                    document.getElementById('coverLetterContainer').innerHTML = `
-                        <div class="cover-letter">
-                            <h3>Cover Letter</h3>
-                            <p>${data}</p>
-                        </div>
-                    `;
-                })
-                .catch(error => {
-                    console.error('Error loading cover letter:', error);
-                    alert('There was an error loading the cover letter.');
-                });
+            // Display the cover letter content with buttons for download and back
+            const coverLetterHTML = `
+                <div class="cover-letter">
+                    <h3>Cover Letter</h3>
+                    <p>
+                        <!-- Content of your cover letter goes here -->
+                        This is the cover letter text, please adjust the content to your needs. If it's a long document, break it into multiple paragraphs.
+                    </p>
+                    <div class="btn-container">
+                        <a class="button" href="csmit-coverl.docx" download>Download Cover Letter</a>
+                        <a class="button" href="/" onclick="window.location.reload(); return false;">Back to Home</a>
+                    </div>
+                </div>
+            `;
+
+            // Insert the HTML for the cover letter into the page
+            document.getElementById('coverLetterContainer').innerHTML = coverLetterHTML;
         }
     </script>
 </body>
