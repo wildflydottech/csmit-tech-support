@@ -63,7 +63,8 @@
             box-shadow: 0 0 20px #00ff00;
         }
 
-        .cover-letter {
+        .cover-letter,
+        .cv-container {
             margin-top: 40px;
             padding: 20px;
             background-color: #111;
@@ -93,13 +94,14 @@
     </header>
 
     <div class="btn-container">
-        <a class="button" href="csmit-cv.docx" target="_blank">Open CV</a>
+        <a class="button" href="#" onclick="openCV()">Open CV</a>
         <a class="button" href="#" onclick="openCoverLetter()">Open Cover Letter</a>
         <a class="button" href="https://drive.google.com/drive/folders/1NfIZR9yw4Vyg1lAFYRqEXUdEkeSYYQ1p?usp=sharing" target="_blank">
             Download Professional Certificates
         </a>
     </div>
 
+    <div id="cvContainer"></div> <!-- This will hold the CV content -->
     <div id="coverLetterContainer"></div> <!-- This will hold the cover letter content -->
 
     <script>
@@ -134,6 +136,28 @@
 
         setInterval(draw, 33);
 
+        // Function to load and display the CV
+        function openCV() {
+            // Display the CV content with buttons for download and back
+            const cvHTML = `
+                <div class="cv-container">
+                    <h3>CV</h3>
+                    <p>
+                        <!-- Content of your CV goes here -->
+                        This is the CV text, please adjust the content to your needs. If it's a long document, break it into multiple paragraphs.
+                    </p>
+                    <div class="btn-container">
+                        <a class="button" href="csmit-tech-support/csmit-cv.docx" download>Download CV</a>
+                        <a class="button" href="/" onclick="window.location.reload(); return false;">Back to Home</a>
+                    </div>
+                </div>
+            `;
+
+            // Insert the HTML for the CV into the page
+            document.getElementById('cvContainer').innerHTML = cvHTML;
+            document.getElementById('coverLetterContainer').innerHTML = "";  // Clear cover letter container
+        }
+
         // Function to load and display the cover letter
         function openCoverLetter() {
             // Display the cover letter content with buttons for download and back
@@ -145,7 +169,7 @@
                         This is the cover letter text, please adjust the content to your needs. If it's a long document, break it into multiple paragraphs.
                     </p>
                     <div class="btn-container">
-                        <a class="button" href="csmit-coverl.docx" download>Download Cover Letter</a>
+                        <a class="button" href="csmit-tech-support/csmit-coverl.docx" download>Download Cover Letter</a>
                         <a class="button" href="/" onclick="window.location.reload(); return false;">Back to Home</a>
                     </div>
                 </div>
@@ -153,6 +177,7 @@
 
             // Insert the HTML for the cover letter into the page
             document.getElementById('coverLetterContainer').innerHTML = coverLetterHTML;
+            document.getElementById('cvContainer').innerHTML = "";  // Clear CV container
         }
     </script>
 </body>
