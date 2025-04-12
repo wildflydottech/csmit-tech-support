@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic DOCX Viewer</title>
+    <title>Collin's Matrix CV</title>
     <style>
         body {
             background-color: black;
@@ -17,7 +17,7 @@
 
         header {
             text-align: center;
-            padding: 20px;
+            padding: 60px 0;
         }
 
         h1 {
@@ -98,16 +98,19 @@
 </head>
 <body>
 
-    <header>
+    <!-- Home Page -->
+    <header id="home-header">
         <h1>127.0.0.1</h1>
-        <h2>Dynamic DOCX Viewer</h2>
-        <p class="intro">Upload and view your DOCX file below</p>
+        <h2>There is no place like home</h2>
+        <p class="intro">This is Collin's online CV portal</p>
     </header>
 
     <div class="btn-container">
-        <input type="file" id="fileInput" class="button" accept=".docx" />
+        <a class="button" href="javascript:showDocxViewer('coverLetter')">View Cover Letter</a>
+        <a class="button" href="javascript:showDocxViewer('cv')">View CV</a>
     </div>
 
+    <!-- Dynamic Content Container -->
     <div id="docx-content" class="content-container"></div>
 
     <div id="buttons-container">
@@ -118,49 +121,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
 
     <script>
-        const fileInput = document.getElementById("fileInput");
+        const homeHeader = document.getElementById("home-header");
         const docxContent = document.getElementById("docx-content");
         const buttonsContainer = document.getElementById("buttons-container");
         const downloadButton = document.getElementById("download-button");
 
-        // Handling file input change
-        fileInput.addEventListener("change", function(event) {
-            const file = event.target.files[0];
+        // Function to load DOCX content and show it
+        function showDocxViewer(docType) {
+            homeHeader.style.display = "none";  // Hide home page
+            docxContent.style.display = "block"; // Show content area
+            buttonsContainer.style.display = "block"; // Show buttons (download and back)
+            docxContent.innerHTML = ""; // Clear previous content
 
-            if (file && file.name.endsWith(".docx")) {
-                const reader = new FileReader();
+            let fileUrl;
+            if (docType === 'coverLetter') {
+                fileUrl = "csmit-coverl.docx"; // Path to the cover letter .docx
+            } else if (docType === 'cv') {
+                fileUrl = "csmit-cv.docx"; // Path to the CV .docx
+            }
 
-                reader.onload = function(e) {
-                    const arrayBuffer = e.target.result;
-
-                    // Convert DOCX to HTML using Mammoth.js
+            // Read and display the DOCX file
+            fetch(fileUrl)
+                .then(response => response.arrayBuffer())
+                .then(arrayBuffer => {
                     mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
                         .then(function(result) {
-                            // Inject converted HTML into the content container
+                            // Inject the converted HTML content
                             docxContent.innerHTML = result.value;
 
-                            // Show download and back buttons
-                            buttonsContainer.style.display = "block";
-
-                            // Set up download button to download the original DOCX file
+                            // Set up the download button to download the original DOCX file
                             downloadButton.onclick = function() {
                                 const link = document.createElement("a");
-                                link.href = URL.createObjectURL(file);
-                                link.download = file.name;
-                                link.click();
-                            };
-                        })
-                        .catch(function(err) {
-                            console.error("Error converting DOCX to HTML:", err);
-                        });
-                };
-
-                reader.readAsArrayBuffer(file);
-            } else {
-                alert("Please upload a valid DOCX file.");
-            }
-        });
-    </script>
-
-</body>
-</html>
+                                link.href = fileUrl;
+                                link.download = docType === 'coverLetter' ? 'coverLetter.docx' : 'cv.docx';
+                                link.click
